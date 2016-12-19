@@ -1,6 +1,3 @@
-﻿// Learn more about F# at http://fsharp.org. See the 'F# Tutorial' project
-// for more guidance on F# programming.
-
 #r "System.Net.Http.dll"
 #r @"c:\src\commentduel\master\retriever\packages\FSharp.Data.2.3.2\lib\net40\FSharp.Data.dll"
 #r @"c:\src\commentduel\master\retriever\packages\FSharp.Data.TypeProviders.5.0.0.2\lib\net40\FSharp.Data.TypeProviders.dll"
@@ -71,7 +68,7 @@ let downloadDocs () =
     |> Seq.iter (fun doc ->
         eprintfn "downloading \"%s\" from %s" doc.DisplayTitle doc.DownloadLink
         if download doc then
-            System.Threading.Thread.Sleep 5000)
+           System.Threading.Thread.Sleep 5000)
 
 let extractText () =
     let extract = xpdf.extractText @"C:\utils\xpdfbin-win-3.04\bin64\pdftotext.exe"
@@ -96,7 +93,7 @@ let fixupText () =
 
 (*
 let runSentiment batchSize =
-    let client = CognitiveServices.getClient "455d87e6819c43fcb7284efba4e56df9"
+    let client = CognitiveServices.getClient key
     let getId file = Path.GetFileNameWithoutExtension(file).Substring(4)
     let read file = File.ReadAllText file
     Directory.EnumerateFiles(@"c:\data\dpd\documents\txt", "doc-*.txt")
