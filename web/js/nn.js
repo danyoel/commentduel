@@ -3,7 +3,7 @@
 
 var nnApp = angular.module('nnApp', []);
 
-nnApp.controller('MainController', ['$scope', 'comments', function ($scope, comments) {
+nnApp.controller('MainController', ['$scope', '$http', 'comments', function ($scope, $http, comments) {
     $scope.submit = function () {
         comments.postRebuttal();
     };
@@ -12,21 +12,33 @@ nnApp.controller('MainController', ['$scope', 'comments', function ($scope, comm
         comments.getComment();
     };
 
-    $scope.comment = {
+    /*$scope.comment = {
         id: 123456,
         projectId: 54321,
         text: "Loading comment..."
-    };
+    };*/
+
+    comments.getComment().then(function (data) {
+        $scope.comment = data;
+    });
 }]);
 
 
-nnApp.factory('comments', function () {
-
+nnApp.factory('comments', ['$http', '$q', function ($http, $q) {
     var getComment = function () {
-        return {
-            "id": 1247532,
-            "text": "Lorem ipsum i need moar parking directly in front of my house"
-        };
+        var projectId = 3024625;
+
+        return $q(function (resolve, reject) {
+            $http.get('wa-seattle/project-' + projectId + '.json')
+            //$http.get('https://data.nimby.ninja/wa-seattle/project-' + projectId + '.json')
+                .then(function (resp) {
+                    resolve({
+                        "project": resp.data.result,
+                        "id": 1247532,
+                        "text": "Lorem ipsum i need moar parking directly in front of my house"
+                    });
+                }, reject);
+        })
     };
 
     var postRebuttal = function (inResponseTo, onBehalfOf, rebuttal) {
@@ -37,4 +49,4 @@ nnApp.factory('comments', function () {
         "getComment": getComment,
         "postRebuttal": postRebuttal 
     };
-});
+}]);

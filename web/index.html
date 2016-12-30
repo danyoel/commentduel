@@ -12,20 +12,34 @@
     <div class="container">
         <h1>NIMBY Ninja ✵ <small>Fight the powers that be.</small></h1>
 
-        <p>
-            Seattle residents give feedback on new development projects through the public comment process.
-            Today, almost all comments are anti-development, anti-density, and negative. 
-            <br />
-            <strong>NIMBY Ninja</strong> invites you to read a comment and submit a rebuttal. Show the city
-            that the pro-growth, pro-density, pro-affordable housing community cares! 
-        </p>
+        <div class="row">
+            <div class="col-md-8">
+                <p>
+                    Seattle residents give feedback on new development projects through the public comment process.
+                    Today, almost all comments are anti-development, anti-density, and negative.
+                </p>
+                <p>
+                    <strong>NIMBY Ninja</strong> invites you to read a comment and submit a rebuttal. Show the city
+                    that the pro-growth, pro-density, pro-affordable housing community cares!
+                </p>
+            </div>
+        </div>
+        
 
         <div class="row" ng-controller="MainController">
+            <div class="col-md-8 ng-cloak">
+                <h2>{{comment.project.address.display}} 
+                    <small>
+                        <a href="https://www.bing.com/maps?q={{comment.project.address.display}}, Seattle, WA">map</a>
+                        | <a href="https://www.seattleinprogress.com/project/{{comment.project.apno}}">details</a>
+                    </small>
+                </h2>
+                <blockquote>
+                    <p>{{comment.project.projectDescription}}</p>
+                </blockquote>
+            </div>
             <div class="col-md-6">
                 <h2 class="ng-cloak">Comment #{{comment.id}}</h2>
-                <div>See project details at 
-                    <a href="https://www.seattleinprogress.com/project/{{comment.projectId}}">Seattle in Progress</a>
-                </div>
                 <p>
                     Lorem ipsum dolor sit amet
                 </p>
@@ -37,6 +51,14 @@
                         <h2>Your rebuttal</h2>
                         <textarea class="form-control" rows="10"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="emailAddress">Your email <small><a>why?</a></small></label>
+                        <p class="bg-warning">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                            Seattle DPD requires an email address to record you as as a "party of record."</p>
+                        <input class="form-control" type="email" id="emailAddress" />
+                    </div>
+                    
                     <button type="button" class="btn btn-primary" ng-click="submit();">Submit rebuttal</button>
                 </form>
             </div>
@@ -45,7 +67,7 @@
         <div class="row">
             <p>
                 NIMBY Ninja is <a href="https://twitter.com/danyoel">Dan Liebling</a> and
-                <a href="http://www.mathasburton.com">Mathias Burton</a>.
+                <a href="http://www.mathiasburton.com">Mathias Burton</a>.
             </p>
         </div>
     </div>
