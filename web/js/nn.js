@@ -1,9 +1,9 @@
 ﻿/* Copyright 2017 Daniel J. Liebling. All rights reserved. */
-
+"use strict";
 
 var nnApp = angular.module('nnApp', []);
 
-nnApp.controller('MainController', ['$scope', 'comments', function ($scope, comments) {
+nnApp.controller('MainController', ['$scope', '$http', 'comments', function ($scope, $http, comments) {
     $scope.submit = function () {
         comments.postRebuttal();
     };
@@ -12,21 +12,31 @@ nnApp.controller('MainController', ['$scope', 'comments', function ($scope, comm
         comments.getComment();
     };
 
-    $scope.comment = {
-        id: 123456,
-        projectId: 54321,
-        text: "Loading comment..."
-    };
+    comments.getComment().then(function (data) {
+        $scope.comment = data;
+    });
 }]);
 
 
-nnApp.factory('comments', function () {
-
+nnApp.factory('comments', ['$http', '$q', function ($http, $q) {
     var getComment = function () {
-        return {
-            "id": 1247532,
-            "text": "Lorem ipsum i need moar parking directly in front of my house"
-        };
+        var projectId = 3024625;
+        var commentId = 675324;
+
+        return $q(function (resolve, reject) {
+            // fire off two async requests: one for the project and one for the comment text
+            var projectPrm = $http.get('https://nimbyninja.blob.core.windows.net/wa-seattle/project-' + projectId + '.json');
+            var commentPrm = $http.get('https://nimbyninja.blob.core.windows.net/wa-seattle/doc-' + commentId + '.txt');
+
+            // join back async threads when they complete, then return to controller
+            $q.all([projectPrm, commentPrm]).then(function (results) {
+                resolve({
+                    "project": results[0].data.result,
+                    "id": projectId,
+                    "commentText": results[1].data
+                });
+            }, reject);
+        })
     };
 
     var postRebuttal = function (inResponseTo, onBehalfOf, rebuttal) {
@@ -37,4 +47,4 @@ nnApp.factory('comments', function () {
         "getComment": getComment,
         "postRebuttal": postRebuttal 
     };
-});
+}]);
