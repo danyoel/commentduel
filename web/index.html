@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="nnApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NIMBY NINJA ✵</title>
+    <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript">var appInsights=window.appInsights||function(config){function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t}({instrumentationKey:"b454888f-5b51-4fdd-b370-8087795719eb"}); window.appInsights=appInsights; appInsights.trackPageView();</script>
+</head>
+<body>
+    <div class="container">
+        <h1>NIMBY Ninja ✵ <small>Fight the powers that be.</small></h1>
+
+        <p>
+            Seattle residents give feedback on new development projects through the public comment process.
+            Today, almost all comments are anti-development, anti-density, and negative. 
+            <br />
+            <strong>NIMBY Ninja</strong> invites you to read a comment and submit a rebuttal. Show the city
+            that the pro-growth, pro-density, pro-affordable housing community cares! 
+        </p>
+
+        <div class="row" ng-controller="MainController">
+            <div class="col-md-6">
+                <h2 class="ng-cloak">Comment #{{comment.id}}</h2>
+                <div>See project details at 
+                    <a href="https://www.seattleinprogress.com/project/{{comment.projectId}}">Seattle in Progress</a>
+                </div>
+                <p>
+                    Lorem ipsum dolor sit amet
+                </p>
+                <button type="button" class="btn btn-info" ng-click="nextComment();">Next comment</button>
+            </div>
+            <div class="col-md-6">
+                <form>
+                    <div class="form-group">
+                        <h2>Your rebuttal</h2>
+                        <textarea class="form-control" rows="10"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="submit();">Submit rebuttal</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <p>
+                NIMBY Ninja is <a href="https://twitter.com/danyoel">Dan Liebling</a> and
+                <a href="http://www.mathasburton.com">Mathias Burton</a>.
+            </p>
+        </div>
+    </div>
+    
+
+    
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="js/nn.js"></script> 
+    <!--
+    To collect end-user usage analytics about your application,
+    insert the following script into each page you want to track.
+    Place this code immediately before the closing </head> tag,
+    and before any other scripts. Your first data will appear
+    automatically in just a few seconds.
+    -->
+    
+</body>
+</html>
