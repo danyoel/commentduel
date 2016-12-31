@@ -33,7 +33,7 @@ nnApp.factory('comments', ['$http', '$q', function ($http, $q) {
                 resolve({
                     "project": results[0].data.result,
                     "id": projectId,
-                    "commentText": results[1].data
+                    "commentText": "Comment text" //results[1].data
                 });
             }, reject);
         })
