@@ -5,46 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="NOINDEX">
-    <title>NIMBY NINJA ✵</title>
+    <title>NIMBY NINJA ✵ Fight for density.</title>
     <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">var appInsights=window.appInsights||function(config){function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t}({instrumentationKey:"b454888f-5b51-4fdd-b370-8087795719eb"}); window.appInsights=appInsights; appInsights.trackPageView();</script>
+    <script src="http://www.bing.com/api/maps/mapcontrol"></script>
+    <!--<script src="https://www.google.com/recaptcha/api.js"></script>-->
 </head>
 <body>
-    <div class="container">
-        <h1>NIMBY Ninja ✵ <small>Fight the powers that be.</small></h1>
+    <div class="container" ng-controller="MainController">
+        <div class="row">
+            <div classs="col-md-4">
+                <img src="img/nimby-logo_v1.svg" alt="nimby ninja logo" style="width:225px;height:106px" />
+                <!--<img src="img/logo-stacked-225x106.png" alt="nimby ninja logo" style="width:225px;height:106px" />-->
+            </div>
+        </div>
 
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <h3>NIMBY Ninja is currently in demo mode. We'll have a real thing soon.</h3>
             </div>
         </div>
-        
+       
         <div class="row">
-            <div class="col-md-8">
-                <p>
-                    Seattle residents give feedback on new development projects through the public comment process.
-                    Today, almost all comments are anti-development, anti-density, and negative.
-                </p>
-                <p>
-                    <strong>NIMBY Ninja</strong> invites you to read a comment and submit a rebuttal. Show the city
-                    that the pro-growth, pro-density, pro-affordable housing community cares!
-                </p>
-            </div>
-        </div>
-        
-
-        <div class="row" ng-controller="MainController">
-            <div class="col-md-8 ng-cloak">
+            <div class="col-md-6 ng-cloak">
                 <h2>{{comment.project.address.display}} 
                     <small>
-                        <a href="https://www.bing.com/maps?q={{comment.project.address.display}}, Seattle, WA">map</a>
-                        | <a href="https://www.seattleinprogress.com/project/{{comment.project.apno}}">details</a>
+                        <a href="https://www.seattleinprogress.com/project/{{comment.project.apno}}">details</a>
                     </small>
                 </h2>
                 <blockquote>
                     <p>{{comment.project.projectDescription}}</p>
                 </blockquote>
             </div>
+            <div class="col-md-6 ng-cloak">
+                <div id="map" style="width:440px;height:200px"></div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-6">
                 <form>
                     <h2 class="ng-cloak">Public comment</h2>
@@ -60,15 +58,17 @@
                 <form>
                     <div class="form-group">
                         <h2>Your rebuttal</h2>
-                        <textarea class="form-control" rows="10"></textarea>
+                        <textarea class="form-control" rows="10" ng-model="rebuttal"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="emailAddress">Your email <small><a>why?</a></small></label>
                         <p class="bg-warning">
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                            Seattle DPD requires an email address to record you as as a "party of record."</p>
-                        <input class="form-control" type="email" id="emailAddress" />
+                            Seattle DPD requires an email address to record you as as a “party of record.”</p>
+                        <input class="form-control" type="email" id="emailAddress" value="{{emailAddress}}" />
                     </div>
+
+                    <!-- <div class="g-recaptcha" data-sitekey="6Lcn7hIUAAAAAGtCOb7PU6-QKez_8TJDMiC-vk1d"></div> -->
                     
                     <button type="button" class="btn btn-primary" ng-click="submit();">Submit rebuttal</button>
                 </form>
@@ -86,7 +86,8 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
-    <script src="js/nn.js"></script>
+    <script src="js/nn.js?v=1"></script>
 </body>
 </html>

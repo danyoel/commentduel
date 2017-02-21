@@ -13,6 +13,23 @@ nnApp.controller('MainController', ['$scope', '$http', '$localStorage', 'comment
             $scope.storage.rebutted = [];
         }
 
+        var map = new Microsoft.Maps.Map(document.getElementById('map'), {
+            credentials: 'AulBFfFGC4C1qaIJ3_oPNgAJWyffDpSzzMnyUiM1Rus1uJOheMYtkGLmfWVjCVP2',
+            navigationBarMode: Microsoft.Maps.NavigationBarMode.compact
+        });
+
+        var updateMap = function () {
+            map.setView({
+                center: new Microsoft.Maps.Location($scope.comment.project.coordinate.latitude, $scope.comment.project.coordinate.longitude),
+                zoom: 15
+            });
+            if (map.entities.getLength() == 1)
+            {
+                map.entities.removeAt(0);
+            }
+            map.entities.push(new Microsoft.Maps.Pushpin(map.getCenter(), null));
+        };
+
 
         $scope.nextComment = function () {
             // pick a project
@@ -25,12 +42,13 @@ nnApp.controller('MainController', ['$scope', '$http', '$localStorage', 'comment
             // kick off async request for that comment
             comments.getComment(project.id, commentId).then(function (data) {
                 $scope.comment = data;
+                updateMap();
             });
         };
 
 
         $scope.submit = function () {
-            comments.postRebuttal().then(function () {
+            comments.postRebuttal($scope.comment.id, $scope.comment.commentId, $scope.emailAddress, $scope.rebuttal).then(function () {
                 $scope.storage.rebutted.push($scope.comment.commentId);
                 $scope.nextComment();
             });
@@ -87,8 +105,15 @@ nnApp.factory('comments', ['$http', '$q', function ($http, $q, $localStorage) {
         })
     };
 
-    var postRebuttal = function (inResponseTo, onBehalfOf, rebuttal) {
-
+    var postRebuttal = function (projectId, commentId, onBehalfOf, rebuttal) {
+        $http.post("api/Rebuttal",
+            {
+                "projectId": projectId,
+                "commentId": commentId,
+                "emailAddress": onBehalfOf,
+                "rebuttal": rebuttal
+            })
+        .then();
     };
 
     return {

@@ -3,3 +3,6 @@
 ################################################################################
 
 /retriever/packages
+/node_modules
+/web2/private.config
+/web2/packages
