@@ -12,7 +12,7 @@
     <!--<script src="https://www.google.com/recaptcha/api.js"></script>-->
 </head>
 <body>
-    <div class="container" ng-controller="MainController">
+    <div class="container"> <!-- ng-controller="MainController" -->
         <div class="row">
             <div classs="col-md-4">
                 <img src="img/nimby-logo_v1.svg" alt="nimby ninja logo" style="width:225px;height:106px" />
@@ -26,54 +26,7 @@
             </div>
         </div>
        
-        <div class="row">
-            <div class="col-md-6 ng-cloak">
-                <h2>{{comment.project.address.display}} 
-                    <small>
-                        <a href="https://www.seattleinprogress.com/project/{{comment.project.apno}}">details</a>
-                    </small>
-                </h2>
-                <blockquote>
-                    <p>{{comment.project.projectDescription}}</p>
-                </blockquote>
-            </div>
-            <div class="col-md-6 ng-cloak">
-                <div id="map" style="width:440px;height:200px"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <form>
-                    <h2 class="ng-cloak">Public comment</h2>
-                    <div class="form-group">
-                        <textarea class="form-control" rows="10">
-                            {{comment.commentText}}
-                        </textarea>
-                    </div>
-                    <button type="button" class="btn btn-info" ng-click="nextComment();">Next comment</button>
-                </form>
-            </div>
-            <div class="col-md-6">
-                <form>
-                    <div class="form-group">
-                        <h2>Your rebuttal</h2>
-                        <textarea class="form-control" rows="10" ng-model="rebuttal"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="emailAddress">Your email <small><a>why?</a></small></label>
-                        <p class="bg-warning">
-                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                            Seattle DPD requires an email address to record you as as a “party of record.”</p>
-                        <input class="form-control" type="email" id="emailAddress" value="{{emailAddress}}" />
-                    </div>
-
-                    <!-- <div class="g-recaptcha" data-sitekey="6Lcn7hIUAAAAAGtCOb7PU6-QKez_8TJDMiC-vk1d"></div> -->
-                    
-                    <button type="button" class="btn btn-primary" ng-click="submit();">Submit rebuttal</button>
-                </form>
-            </div>
-        </div>
+        <div ng-view></div>
 
         <div class="row">
             <p>
@@ -85,8 +38,8 @@
     
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
     <script src="js/nn.js?v=1"></script>
 </body>

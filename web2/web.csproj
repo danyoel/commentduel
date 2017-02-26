@@ -92,6 +92,7 @@
     <Content Include="img\logo-stacked-300x141.png" />
     <Content Include="img\nimby-logo_v1.svg" />
     <Content Include="index.html" />
+    <Content Include="mainTemplate.html" />
     <Content Include="Web.config" />
     <Content Include="js\nn.js" />
   </ItemGroup>

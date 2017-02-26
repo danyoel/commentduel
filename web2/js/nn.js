@@ -2,11 +2,15 @@
 
 "use strict";
 
-var nnApp = angular.module('nnApp', ['ngStorage']);
+var nnApp = angular.module('nnApp', ['ngStorage', 'ngRoute']);
 
-nnApp.controller('MainController', ['$scope', '$http', '$localStorage', 'comments',
-    function ($scope, $http, $localStorage, comments) {
+nnApp.controller('MainController', ['$scope', '$http', '$localStorage', '$route', '$routeParams', '$location', 'comments',
+    function ($scope, $http, $localStorage, $route, $routeParams, $location, comments) {
         $scope.storage = $localStorage;
+        $scope.$route = $route;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+
         // init array of rebutted comments
         if ($scope.storage.rebutted === undefined)
         {
@@ -122,3 +126,15 @@ nnApp.factory('comments', ['$http', '$q', function ($http, $q, $localStorage) {
         "postRebuttal": postRebuttal 
     };
 }]);
+
+
+nnApp.config(function ($routeProvider) {
+    $routeProvider.when('/project/:pid/comment/:cid', {
+        controller: 'MainController',
+        templateUrl: 'mainTemplate.html'
+    })
+    .when('/', {
+        controller: 'MainController',
+        templateUrl: 'mainTemplate.html'
+    });
+});
