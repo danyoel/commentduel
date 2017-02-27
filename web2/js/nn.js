@@ -4,18 +4,9 @@
 
 var nnApp = angular.module('nnApp', ['ngStorage', 'ngRoute']);
 
-nnApp.controller('MainController', ['$scope', '$http', '$localStorage', '$route', '$routeParams', '$location', 'comments',
-    function ($scope, $http, $localStorage, $route, $routeParams, $location, comments) {
+nnApp.controller('CommentController', ['$scope', '$http', '$localStorage', '$routeParams', '$location', 'comments',
+    function ($scope, $http, $localStorage, $routeParams, $location, comments) {
         $scope.storage = $localStorage;
-        $scope.$route = $route;
-        $scope.$location = $location;
-        $scope.$routeParams = $routeParams;
-
-        // init array of rebutted comments
-        if ($scope.storage.rebutted === undefined)
-        {
-            $scope.storage.rebutted = [];
-        }
 
         var map = new Microsoft.Maps.Map(document.getElementById('map'), {
             credentials: 'AulBFfFGC4C1qaIJ3_oPNgAJWyffDpSzzMnyUiM1Rus1uJOheMYtkGLmfWVjCVP2',
@@ -35,22 +26,6 @@ nnApp.controller('MainController', ['$scope', '$http', '$localStorage', '$route'
         };
 
 
-        $scope.nextComment = function () {
-            // pick a project
-            var pidx = Math.floor(Math.random() * $scope.summary.projects.length);
-            var project = $scope.summary.projects[pidx];
-            // pick a comment
-            var cidx = Math.floor(Math.random() * project.comments.length);
-            var commentId = project.comments[cidx];
-
-            // kick off async request for that comment
-            comments.getComment(project.id, commentId).then(function (data) {
-                $scope.comment = data;
-                updateMap();
-            });
-        };
-
-
         $scope.submit = function () {
             comments.postRebuttal($scope.comment.id, $scope.comment.commentId, $scope.emailAddress, $scope.rebuttal).then(function () {
                 $scope.storage.rebutted.push($scope.comment.commentId);
@@ -58,38 +33,77 @@ nnApp.controller('MainController', ['$scope', '$http', '$localStorage', '$route'
             });
         };
 
-
-        // kick off data load request, then populate comments when ready.
         comments.getSummary().then(function (data) {
-            // remove rebutted comments
-            for (var i = 0; i < data.projects.length; i++) {
-                var project = data.projects[i];
-                for (var j = 0; j < project.comments.length; j++) {
-                    // remove any comments on which the user has already commented
-                    project.comments = project.comments.filter(function (c) {
-                        return $scope.storage.rebutted.indexOf(c) == -1;
-                    });
-                }
-            }
-
             $scope.summary = data;
-            $scope.nextComment();
+            comments.getComment($routeParams.projectId, $routeParams.commentId).then(function (data) {
+                $scope.comment = data;
+                updateMap();
+            });
         });
     }
 ]);
 
 
-nnApp.factory('comments', ['$http', '$q', function ($http, $q, $localStorage) {
+// picks a random project and redirects route
+nnApp.controller('MainController', ['$location', 'comments', function ($location, comments) {
+    comments.getSummary().then(function (data) {
+        var randProj = comments.pickRandom();
+        $location.url('/project/' + randProj.projectId + '/comment/' + randProj.commentId);
+    });
+}]);
+
+
+nnApp.factory('comments', ['$http', '$q', '$localStorage', function ($http, $q, $localStorage) {
     var dataRoot = 'https://nimbyninja.blob.core.windows.net/';
+
+    var summary = null; // cache summary data
+
+    // init array of rebutted comments
+    if ($localStorage.rebutted === undefined) {
+        $localStorage.rebutted = [];
+    }
+
+    var removeRebutted = function (data) {
+        for (var i = 0; i < data.projects.length; i++) {
+            var project = data.projects[i];
+            for (var j = 0; j < project.comments.length; j++) {
+                // remove any comments on which the user has already commented
+                project.comments = project.comments.filter(function (c) {
+                    return ($localStorage.rebutted.indexOf(c) == -1);
+                });
+            }
+        }
+    };
+
 
     var getSummary = function () {
         return $q(function (resolve, reject) {
-            $http.get(dataRoot + 'wa-seattle/summary.json')
-            .then(function (resp) {
-                resolve(resp.data);
-            }, reject);
+            if (summary !== null) {
+                resolve(summary);
+            }
+            else {
+                $http.get(dataRoot + 'wa-seattle/summary.json')
+                .then(function (resp) {
+                    removeRebutted(resp.data);
+                    summary = resp.data;
+                    resolve(summary);
+                }, reject);
+            }
         });
     };
+
+
+    var pickRandom = function () {
+        // pick a project
+        var pidx = Math.floor(Math.random() * summary.projects.length);
+        var project = summary.projects[pidx];
+        // pick a comment
+        var cidx = Math.floor(Math.random() * project.comments.length);
+        var commentId = project.comments[cidx];
+
+        return {'projectId': project.id, 'commentId': commentId};
+    };
+
 
     var getComment = function (projectId, commentId) {
         return $q(function (resolve, reject) {
@@ -123,18 +137,19 @@ nnApp.factory('comments', ['$http', '$q', function ($http, $q, $localStorage) {
     return {
         "getSummary": getSummary,
         "getComment": getComment,
+        "pickRandom": pickRandom,
         "postRebuttal": postRebuttal 
     };
 }]);
 
 
-nnApp.config(function ($routeProvider) {
-    $routeProvider.when('/project/:pid/comment/:cid', {
-        controller: 'MainController',
+nnApp.config(function ($routeProvider, $locationProvider) {
+    $routeProvider.when('/project/:projectId/comment/:commentId', {
+        controller: 'CommentController',
         templateUrl: 'mainTemplate.html'
     })
     .when('/', {
         controller: 'MainController',
-        templateUrl: 'mainTemplate.html'
+        template: '<div>picking a battle...</div>'
     });
 });
