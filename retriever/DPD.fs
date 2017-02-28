@@ -15,10 +15,9 @@ type Project = _Project.Result
 type Address = _AddressDetail.Result
 type Document = _Documents.Document
 
-type MasterProject = { retrieved: DateTimeOffset; project: Project; address: Address; documents: Document array }
 
-let cache<'a> () = ()
-    
+type MasterProject = { retrieved: DateTimeOffset; project: Project; address: Address; documents: Document array }
+ 
 
 let inline failOnFault response =
     let success = ( ^a : (member Success : bool) response)
@@ -73,4 +72,4 @@ let extractDocId uri =
     if m.Success then
         Some (int (m.Groups.[1].Captures.[0].Value))
     else
-        None
+        None   
